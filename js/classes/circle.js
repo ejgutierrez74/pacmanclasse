@@ -3,7 +3,7 @@ class Circle {
   /**
    * Creates an instance of Circle.
    *
-   * @author moi
+   * @author eduardo
    * @param {number} r The desired radius of the circle.
    */
   constructor(r) {
