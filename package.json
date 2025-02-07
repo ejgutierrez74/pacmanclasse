@@ -1,7 +1,7 @@
 {
   "name": "PacmanClasse",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "Practica Classe",
   "private": true,
   "keywords": [
     ""
@@ -17,11 +17,13 @@
     "docs": "jsdoc js/classes/gameObject.js js/classes/circle.js -d docs"
   },
   "devDependencies": {
-    "eslint": "^9.19.0",
+    "eslint": "^8.57.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-ecmascript-compat": "^3.2.1",
-    "eslint-plugin-jsdoc": "^50.6.2",
-    "eslint-plugin-require-extensions": "^0.1.3"
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.3",
+    "eslint-plugin-require-extensions": "^0.1.3",
+    "eslint-plugin-sonarjs": "^3.0.1"
   },
   "dependencies": {
     "@types/p5": "^1.7.6",

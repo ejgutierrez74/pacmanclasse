@@ -2,7 +2,7 @@ import { gameObject } from "./classes/gameObject.js";
 import { Pacman } from "./classes/pacman.js";
 import { Food } from "./classes/food.js";
 import {configGame} from "./constants.js";
-
+import {ErrorPac} from "./classes/errorPac.js";
 //0 -> pacman, 1 -> roca, 2 -> food
 /*
 const map = [
@@ -59,6 +59,11 @@ function preload() {
 
   function handleError() {
   console.error("Error carregar alguna imatge");
+  try {
+    throw new ErrorPac(20, "Falta imatge per carregar");
+  } catch (error) {
+    console.error("Error carregar alguna imatge");
+  }
 }
 
 function handleImage() {
@@ -161,6 +166,8 @@ function keyPressed() {
     myPacman.moveDown();
   } else {
     console.log("Error, tecla no reconeguda");
+    let error = new ErrorPac(101, "Press a valid key");
+    error.toString();
   }
 }
 
