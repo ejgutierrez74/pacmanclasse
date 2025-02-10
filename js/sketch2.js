@@ -3,7 +3,7 @@ import { Pacman } from "./classes/pacman.js";
 import { Food } from "./classes/food.js";
 import {configGame} from "./constants.js";
 import {ErrorPac} from "./classes/errorPac.js";
-//0 -> pacman, 1 -> roca, 2 -> food
+//0 -> pallcman, 1 -> roca, 2 -> food
 /*
 const map = [
   [0, 1, 1, 1],
