@@ -13,8 +13,9 @@ export class Pacman extends gameObject {
   constructor(row,column){
     super(row,column);
     this.directionPacman =1; // 1 -> right, 2 -> up, 3 -> left, 4 -> down
-    this.speedPacman = SPEED_PACMAN; //Image size
+    this.speedPacman = configGame.SPEED_PACMAN; //Image size
     this.scorePacman = 0;
+    this.pacmanlives=configGame.LIVES_PACMAN;
     //this.widthCanvasPacman = 128;
    // this.pacmanDiameter =32;
   }
@@ -72,6 +73,20 @@ export class Pacman extends gameObject {
   testCollideRock(roca){
     let distancia = dist(this.coordXPixels,
       this.coordYPixels, roca.coordXPixels, roca.coordYPixels);
+    // console.log( "Distancia entre pacman i roca: " + distancia);
+
+    if (distancia < IMAGE_SIZE) {
+      //mHE FOTUT nata amb una roca
+      alert("Has xocat amb una roca, has perdut una vida");
+      this.pacmanlives--;
+      this.spawnPacman();
+      } //End switch
+    }
+      //mHE FOTUT nata amb una roca
+/*
+  testCollideRock(roca){
+    let distancia = dist(this.coordXPixels,
+      this.coordYPixels, roca.coordXPixels, roca.coordYPixels);
    // console.log( "Distancia entre pacman i roca: " + distancia);
 
     if (distancia < IMAGE_SIZE) {
@@ -97,6 +112,7 @@ export class Pacman extends gameObject {
         //console.log("Roca a massa distan");
       }
     }
+    */
 testCollideFood(food) {
   let distancia = dist(this.coordXPixels,
     this.coordYPixels, food.coordXPixels, food.coordYPixels);
@@ -109,6 +125,10 @@ testCollideFood(food) {
     console.log("Food massa lluny");
     return false;
   }
+}
+spawnPacman(){
+  this.coordXPixels = 7*32;
+  this.coordYPixels = 7*32;
 }
 
 

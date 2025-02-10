@@ -21,7 +21,7 @@ console.log("Bgff");
 
 function preload() {
   console.log("o");
-  imgRock = loadImage("../img/roca.png", handleImage, handleError);
+  imgRock = loadImage("../media/roca.png", handleImage, handleError);
 }
 
 function handleError() {

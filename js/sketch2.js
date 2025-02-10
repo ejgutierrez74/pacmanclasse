@@ -42,19 +42,20 @@ const arrFood = [];
 let imgPacmanLeft;
 let imgPacmanRight, imgPacmanUp, imgPacmanDown, imgPacman;
 let myPacman;
+let wakaSound;
 let timer = 0;
 let startTimeGame = 0;
 let endTimeGame = 0;
 
 function preload() {
-  imgRock = loadImage("../img/roca.png", handleImage, handleError);
-  imgFood = loadImage("../img/food.png", handleImage, handleError);
-  imgPacman = loadImage("../img/pacLeft.png", handleImage, handleError);
-  imgPacmanRight = loadImage("../img/pacRight.png", handleImage, handleError);
-  imgPacmanUp = loadImage("../img/pacUp.png", handleImage, handleError);
-  imgPacmanLeft = loadImage("../img/pacLeft.png", handleImage, handleError);
-  imgPacmanDown = loadImage("../img/pacDown.png", handleImage, handleError);
-
+  imgRock = loadImage("../media/roca.png", handleImage, handleError);
+  imgFood = loadImage("../media/food.png", handleImage, handleError);
+  imgPacman = loadImage("../media/pacLeft.png", handleImage, handleError);
+  imgPacmanRight = loadImage("../media/pacRight.png", handleImage, handleError);
+  imgPacmanUp = loadImage("../media/pacUp.png", handleImage, handleError);
+  imgPacmanLeft = loadImage("../media/pacLeft.png", handleImage, handleError);
+  imgPacmanDown = loadImage("../media/pacDown.png", handleImage, handleError);
+  wakaSound = loadSound("../media/audio/WakaWaka.mp3");
 }
 
   function handleError() {
@@ -63,6 +64,7 @@ function preload() {
     throw new ErrorPac(20, "Falta imatge per carregar");
   } catch (error) {
     console.error("Error carregar alguna imatge");
+    showError();
   }
 }
 
@@ -151,6 +153,8 @@ function draw() {
     default : myPacman.showObject(imgPacman);
 
   }
+  testFinishGame();
+  wakaSound.play();
 } // fi draw
 
 function keyPressed() {
@@ -171,6 +175,43 @@ function keyPressed() {
   }
 }
 
+function showError(){
+  let errorImage = new ErrorPac(105, "Error 2loading image");
+  errorImage.toString();
+  const parent = document.getElementById("error-holder");
+  const node = document.createElement("media");
+  node.setAttribute("src", "./media/tristesa.webp");
+  node.setAttribute("alt", "Imatge Error");
+  node.setAttribute("width", 300);
+  node.setAttribute("height", 300);
+
+  parent.appendChild(node);
+  noLoop();
+  remove();
+}
+
+function testFinishGame(){
+  if (arrFood.length === 0){
+    //Fi del joc
+    noLoop();
+    let theconfirm =confirm("Fi del joc, has guanyat. Desitja jugar una altra partida ?");
+    loop`();`
+    if( theconfirm)
+    {
+      restartGame();
+    }
+    else {
+      alert("Gracies per jugar");
+    }
+    loop();
+  }/*
+  else if {
+    //test if loose game
+  }
+  else {
+    //continume
+  }*/
+}
 /*globalThis: globalThis object. This is done to ensure
 that the p5.js library can call these functions when needed.
  */

@@ -4,6 +4,7 @@ export const configGame = {
   COLUMNS: 10,
   EXTRA_SIZE_HEIGHT: 300,
   SPEED_PACMAN: 32, //
+  LIVES_PACMAN: 3,
   map: [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 2, 2, 2, 1, 2, 2, 2, 2, 1],
