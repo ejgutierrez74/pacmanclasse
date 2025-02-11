@@ -16,4 +16,4 @@ export class ErrorPac extends Error {
   }
 }
 /*
-* Error 1_ Tecla no reconeguda*/
+* Error 1_ Tecla no reconegudad*/
