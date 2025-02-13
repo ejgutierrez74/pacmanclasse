@@ -1,7 +1,7 @@
 /** @class Circle representing a circle.
  * media/DiscordSetup.exe
- * media/LM-Studio-0.3.8-4-x64.exe
- * ñlff */
+ * media/LM-Studio-0.3.8-4-x64.ex
+ * ñlff */e
 class Circle {
   /**
    * Creates an instance of Circle.
