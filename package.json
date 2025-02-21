@@ -12,7 +12,7 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'Error: no test specified' && exit 1",
     "generate-docs": "jsdoc -c jsdoc.json --verbose",
     "docs": "jsdoc js/classes/gameObject.js js/classes/circle.js -d docs",
     "deploy": "vercel"
