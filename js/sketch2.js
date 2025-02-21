@@ -1,39 +1,13 @@
 import { gameObject } from "./classes/gameObject.js";
 import { Pacman } from "./classes/pacman.js";
 import { Food } from "./classes/food.js";
-import {configGame} from "./constants.js";
+import { configGame} from "./constants.js";
 import {ErrorPac} from "./classes/errorPac.js";
-//0 -> pallcman, 1 -> roca, 2 -> food
-/*
-const map = [
-  [0, 1, 1, 1],
-  [2, 1, 1, 2],
-  [2, 1, 1, 2],
-  [1, 1, 1, 1]
-];
+import {Powup} from "./classes/powup.js";
 
-const map = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 2, 2, 2, 1, 2, 2, 2, 2, 1],
-  [1, 2, 1, 2, 1, 2, 1, 2, 2, 1],
-  [1, 2, 1, 3, 2, 2, 1, 2, 2, 1],
-  [1, 2, 2, 2, 1, 2, 2, 3, 2, 1],
-  [1, 2, 1, 2, 1, 2, 1, 2, 2, 1],
-  [1, 2, 1, 2, 2, 3, 1, 2, 2, 1],
-  [1, 2, 1, 1, 1, 1, 1, 3, 2, 1],
-  [1, 2, 2, 2, 2, 2, 2, 2, 4, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-];
-const ROWS = 10;
-const COLUMNS = 10;
-export const IMAGE_SIZE = 32;
-export const WIDTH_CANVAS = IMAGE_SIZE * COLUMNS;
-const HEIGHT_CANVAS = IMAGE_SIZE * ROWS;
-
-const EXTRA_SIZE_HEIGHT=200;
- */
 let imgRock;
 let numberImagesLoaded = 0;
+
 const arrRocks = [];
 
 let imgFood;
@@ -42,10 +16,14 @@ const arrFood = [];
 let imgPacmanLeft;
 let imgPacmanRight, imgPacmanUp, imgPacmanDown, imgPacman;
 let myPacman;
+let pacmanEnemy;
 let wakaSound;
 let timer = 0;
 let startTimeGame = 0;
 let endTimeGame = 0;
+let numberErrorLoadedSounds = 0;
+let imgPowerUp;
+const arrPowerUp = [];
 
 function preload() {
   imgRock = loadImage("../media/roca.png", handleImage, handleError);
@@ -55,9 +33,18 @@ function preload() {
   imgPacmanUp = loadImage("../media/pacUp.png", handleImage, handleError);
   imgPacmanLeft = loadImage("../media/pacLeft.png", handleImage, handleError);
   imgPacmanDown = loadImage("../media/pacDown.png", handleImage, handleError);
-  wakaSound = loadSound("../media/audio/WakaWaka.mp3");
+  imgPowerUp = loadImage("../media/powerupimg.png", handleImage, handleError);
+
+  wakaSound = loadSound("../media/audio/WakaWaka.mp3", handleSound, handleErrorSound);
 }
 
+function handleSound() {
+  console.error("S'ha carregat correctament l'audio");
+}
+function handleErrorSound() {
+  console.error("Error carregar audio");
+  numberErrorLoadedSounds++;
+}
   function handleError() {
   console.error("Error carregar alguna imatge");
   try {
@@ -74,6 +61,8 @@ function handleImage() {
 }
 
 function setup() {
+
+  //numberImagesLoaded = 5; i numberErrorLoadedSounds = 1;
   createCanvas(configGame.WIDTH_CANVAS, configGame.HEIGHT_CANVAS + configGame.EXTRA_SIZE_HEIGHT).parent("sketch-pacman");
   for (let filaActual = 0; filaActual < configGame.ROWS; filaActual++) {
     for (let columnaActual = 0; columnaActual < configGame.COLUMNS; columnaActual++) {
@@ -90,6 +79,10 @@ function setup() {
       else if (configGame.map[filaActual][columnaActual] === 3) {
         myPacman = new Pacman(filaActual, columnaActual);
        // console.log("\n he craat una pacaman a posicio: fila -> " + filaActual + " columna -> " + columnaActual);
+      }
+      else if (configGame.map[filaActual][columnaActual] === 5) {
+        const powerUp = new Powup(filaActual, columnaActual);
+        arrPowerUp.push(powerUp);
       }
       else {
         //Error objecte no defini
@@ -110,6 +103,11 @@ function draw() {
     arrRocks[i].showObject(imgRock);
   }
 
+  //Pintem powerups
+  for (let i = 0; i < arrPowerUp.length; i++) {
+    arrPowerUp[i].showObject(imgPowerUp);
+  }
+
   //Pintem food
   for (let i = 0; i < arrFood.length; i++) {
     arrFood[i].showObject(imgFood);
@@ -128,6 +126,19 @@ function draw() {
     }
   }
   //pINTEM ScoreBoard
+
+  //comprovar colisions pacman amb po
+  for (let i = 0; i < arrPowerUp.length; i++) {
+    let resultTest = myPacman.testCollidePowerup(arrPowerUp[i]);
+
+    if (resultTest) {
+      //Hem xocat amb una powerup i l'activem
+      if (arrPowerUp[i].enabledPowerup === false) {
+        arrPowerUp[i].enabledPowerup = true;
+        arrPowerUp[i].startTimePowerup = millis();
+      } //if enable powerup
+    } //if resultTest
+  } //for powerup
  // textFont(font);
   textSize(20);
   textAlign(CENTER, CENTER);
@@ -153,8 +164,18 @@ function draw() {
     default : myPacman.showObject(imgPacman);
 
   }
+
+  if( wakaSound.isPlaying() === false) {
+    wakaSound.play();
+  }
+  else {
+    //wakaSound.play();
+  }
+  testFinishPowerup();
   testFinishGame();
-  wakaSound.play();
+
+
+  // pacmanEnemy.showObject(imgPacman);
 } // fi draw
 
 function keyPressed() {
@@ -191,6 +212,7 @@ function showError(){
 }
 
 function testFinishGame(){
+ /*
   if (arrFood.length === 0){
     //Fi del joc
     noLoop();
@@ -211,6 +233,22 @@ function testFinishGame(){
   else {
     //continume
   }*/
+}
+
+function testFinishPowerup() {
+
+  for (let i = 0; i < arrPowerUp.length; i++) {
+    if (arrPowerUp[i].enabledPowerup === true) {
+      console.log("Powerup activat numero " + i);
+      console.log("Powerup activat startTime " + arrPowerUp[i].startTimePowerup);
+      console.log("Powerup activat enabled " + arrPowerUp[i].enabledPowerup);
+      if ( (millis() - arrPowerUp[i].startTimePowerup) > 10000) {
+        arrPowerUp[i].enabledPowerup = false;
+        arrPowerUp.splice(i, 1);
+        console.log("Powerup desactivat numero " + i );
+      }
+    }
+  }
 }
 /*globalThis: globalThis object. This is done to ensure
 that the p5.js library can call these functions when needed.

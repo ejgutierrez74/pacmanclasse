@@ -126,6 +126,20 @@ testCollideFood(food) {
     return false;
   }
 }
+
+testCollidePowerup(powerup){
+    let distancia = dist(this.coordXPixels,
+      this.coordYPixels, powerup.coordXPixels, powerup.coordYPixels);
+    // console.log( "Distancia entre pacman i roca: " + distancia);
+
+    if (distancia < IMAGE_SIZE) {
+      console.log("Has agafat una powerup");
+      return true;
+    } else {
+      console.log("Powerup massa lluny");
+      return false;
+    }
+  }
 spawnPacman(){
   this.coordXPixels = 7*32;
   this.coordYPixels = 7*32;
